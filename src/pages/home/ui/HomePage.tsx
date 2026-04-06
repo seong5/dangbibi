@@ -1,48 +1,52 @@
+import { format, parseISO } from 'date-fns'
+import { ko } from 'date-fns/locale'
+import { getUserSetting } from '@/entities/user-setting'
+import { getShiftForDate } from '@/entities/shift'
+import { SHIFT_STYLES, JOB_TYPE_LABELS } from '@/shared/config/shiftPatterns'
+import { today } from '@/shared/lib/date'
+import { useMonthNavigation } from '@/features/shift-navigation'
+import { MonthCalendar } from '@/widgets/month-calendar'
+
 export function HomePage() {
+  const setting = getUserSetting()!
+  const todayStr = today()
+  const shiftType = getShiftForDate(todayStr, setting)
+  const style = SHIFT_STYLES[shiftType]
+  const { year, month, goNextMonth, goPrevMonth, goThisMonth } = useMonthNavigation()
+
+  const todayFormatted = format(parseISO(todayStr), 'M월 d일 (E)', { locale: ko })
+
   return (
-    <div className="flex flex-1 flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-16 py-32 dark:bg-black sm:items-start">
-        <img
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
+    <div className="flex min-h-svh flex-col bg-gray-50">
+      <header className="bg-white px-5 py-4 shadow-sm">
+        <h1 className="text-lg font-bold text-gray-900">당비비</h1>
+        <p className="text-xs text-gray-400">
+          {JOB_TYPE_LABELS[setting.jobType]} · {setting.teamName}
+        </p>
+      </header>
+
+      <main className="flex flex-1 flex-col gap-4 px-5 py-6">
+        {/* 오늘 근무 카드 */}
+        <div className="rounded-2xl bg-white p-4 shadow-sm">
+          <p className="mb-0.5 text-xs text-gray-400">오늘</p>
+          <p className="mb-2 text-sm font-semibold text-gray-700">{todayFormatted}</p>
+          <span
+            className={`inline-block rounded-full px-5 py-1.5 text-xl font-bold ${style.color} ${style.textColor}`}
+          >
+            {style.label}
+          </span>
+        </div>
+
+        {/* 월간 달력 */}
+        <MonthCalendar
+          year={year}
+          month={month}
+          setting={setting}
+          onPrev={goPrevMonth}
+          onNext={goNextMonth}
+          onThisMonth={goThisMonth}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit src/pages/home/ui/HomePage.tsx
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Vite + React + FSD. 배포·문서는 팀에 맞게 정리하면 됩니다.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vite.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              className="h-auto w-auto dark:invert"
-              src="/vercel.svg"
-              alt=""
-              width={16}
-              height={16}
-            />
-            Vite 문서
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://react.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React 문서
-          </a>
-        </div>
       </main>
     </div>
-  );
+  )
 }
