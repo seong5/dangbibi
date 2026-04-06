@@ -12,6 +12,7 @@ interface MonthCalendarProps {
   onPrev: () => void
   onNext: () => void
   onThisMonth: () => void
+  onDayClick?: (date: string) => void
 }
 
 export function MonthCalendar({
@@ -21,6 +22,7 @@ export function MonthCalendar({
   onPrev,
   onNext,
   onThisMonth,
+  onDayClick,
 }: MonthCalendarProps) {
   const days = getMonthShifts(year, month, setting)
   const firstDayOfWeek = getDay(parseISO(days[0].date)) // 0=일 ~ 6=토
@@ -77,7 +79,11 @@ export function MonthCalendar({
           const isSat = colIdx === 6
 
           return (
-            <div key={date} className="flex flex-col items-center gap-0.5 py-0.5">
+            <div
+              key={date}
+              className="flex flex-col items-center gap-0.5 py-0.5 active:opacity-70"
+              onClick={() => onDayClick?.(date)}
+            >
               {/* 날짜 숫자 */}
               <span
                 className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold ${
