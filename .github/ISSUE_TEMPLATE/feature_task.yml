@@ -1,0 +1,66 @@
+name: ✨ 새로운 작업 생성
+description: 새로운 기능 개발, 버그 수정 등 작업을 시작할 때 작성해주세요.
+title: '[작업] 작업 제목 작성'
+labels: ['작업', '기능개발']
+assignees: []
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: 📜 작업 개요
+      description: 작업 내용을 한 문장으로 요약해주세요.
+      placeholder: ex) 로그인 API 연동 및 에러 처리 구현
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: 🔍 작업 상세 설명
+      description: 작업 범위, 구현할 기능, 수정할 부분 등을 구체적으로 작성해주세요.
+      placeholder: |
+        - 로그인 API 호출 및 응답 처리  
+        - 에러 발생 시 사용자에게 메시지 표시  
+        - JWT 토큰 저장 및 자동 갱신 구현
+    validations:
+      required: true
+
+  - type: input
+    id: branch-name
+    attributes:
+      label: 🗂️ 브랜치 이름
+      description: 이 작업을 위한 브랜치 이름을 작성해주세요. 이슈명은 브랜치명과 동일한 형식이지만 prefix 뒤에 이슈번호를 작성합니다. ex) feature/3/login-api
+      placeholder: feature, bug, docs, refactor, chore, ex) feature/login-api, bug/login-error
+    validations:
+      required: true
+
+  - type: input
+    id: due-date
+    attributes:
+      label: 📅 예상 마감일
+      description: 작업 완료 예정일을 입력해주세요.
+      placeholder: ex) 2025/06/10
+    validations:
+      required: false
+
+  - type: textarea
+    id: checklist
+    attributes:
+      label: ✅ 할 일 목록 (체크리스트)
+      description: 작업 진행을 위한 구체적인 항목을 체크박스 형태로 작성해주세요.
+      placeholder: |
+        - [ ] API 연동  
+        - [ ] 에러 처리 UI 구현  
+        - [ ] 유닛 테스트 작성  
+        - [ ] 코드 리뷰 요청
+    validations:
+      required: false
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 🔗 참고 자료
+      description: 관련 문서, 이슈, 레퍼런스 링크 등을 남겨주세요.
+      placeholder: ex) https://example.com/api-docs/login
+    validations:
+      required: false
