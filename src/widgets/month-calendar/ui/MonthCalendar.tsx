@@ -9,6 +9,7 @@ interface MonthCalendarProps {
   year: number
   month: number
   setting: UserSetting
+  focusedDate?: string
   onPrev: () => void
   onNext: () => void
   onThisMonth: () => void
@@ -19,6 +20,7 @@ export function MonthCalendar({
   year,
   month,
   setting,
+  focusedDate,
   onPrev,
   onNext,
   onThisMonth,
@@ -77,6 +79,7 @@ export function MonthCalendar({
           const colIdx = (firstDayOfWeek + idx) % 7
           const isSun = colIdx === 0
           const isSat = colIdx === 6
+          const isFocused = focusedDate !== undefined && date === focusedDate
 
           return (
             <div
@@ -87,14 +90,18 @@ export function MonthCalendar({
               {/* 날짜 숫자 */}
               <span
                 className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold ${
-                  isToday
+                  isToday && isFocused
                     ? 'bg-gray-900 text-white'
-                    : isSun
-                      ? 'text-red-400'
-                      : isSat
-                        ? 'text-blue-400'
-                        : 'text-gray-700'
-                }`}
+                    : isToday
+                      ? 'border border-gray-900 bg-white text-gray-900'
+                      : isFocused
+                        ? 'ring-2 ring-gray-900 ring-offset-1 ring-offset-white'
+                        : isSun
+                          ? 'text-red-400'
+                          : isSat
+                            ? 'text-blue-400'
+                            : 'text-gray-700'
+                } ${isFocused && !isToday ? (isSun ? 'text-red-500' : isSat ? 'text-blue-600' : 'text-gray-900') : ''}`}
               >
                 {dayNum}
               </span>

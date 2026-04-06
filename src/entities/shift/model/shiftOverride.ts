@@ -30,3 +30,12 @@ export function deleteShiftOverride(date: string): void {
   delete map[date]
   storageSet(KEY, map)
 }
+
+/** 휴가·특근 등 추가 일정을 모두 제거하고 순환 근무만 표시 */
+export function clearAllShiftOverrides(): void {
+  storageSet(KEY, {})
+}
+
+export function hasAnyShiftOverride(): boolean {
+  return Object.keys(getOverrideMap()).length > 0
+}
